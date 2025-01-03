@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using Gemini.Cgi;
+using Xkcd.Api;
 
 namespace Xkcd.Cgi;
 
@@ -9,53 +11,58 @@ public class Program
 
     public static void Main(string[] args)
     {
-        Console.Write("20 image/png\r\n");
 
-        var filename = GetImageForRequest();
-        Console.OpenStandardOutput().Write(File.ReadAllBytes(filename));
-    }
-
-    static string GetImageForRequest()
-    {
-        try
-        {
-            var q = Environment.GetEnvironmentVariable("QUERY_STRING") ?? "";
-            if (q == "latest")
-            {
-                return GetLatestImage();
-            }
-            if (AllDigits.IsMatch(q))
-            {
-                var comicId = Convert.ToInt32(q);
-                if (GetComicIds().Contains(comicId))
-                {
-                    return GetSpecificImage(comicId);
-                }
-            }
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
-
-        //if nothing hit, pick a random image
-        return GetRandomImage();
-    }
-
-    static string GetRandomImage()
-    {
-        var comicIDs = GetComicIds();
+        CgiWrapper cgi = new();
+        string query = cgi.SantiziedQuery;
         
-        Random rand = new Random();
-        int index = rand.Next(comicIDs.Count);
-        return GetSpecificImage(comicIDs[index]);
+        if (query == "latest")
+        {
+            ShowLatestComic(cgi);
+        }
+        else if (AllDigits.IsMatch(query))
+        {
+            var comicId = Convert.ToInt32(query);
+            ShowSpecificComic(cgi, comicId);
+        }
+        else
+        {
+            ShowRandomComic(cgi);
+        }
     }
 
-    static string GetSpecificImage(int comicId)
-        => $"{ArchivePath}{comicId}.png";
+    private static void ShowLatestComic(CgiWrapper cgi)
+    {
+        var ids = GetComicIds();
+        if (ids.Count == 0)
+        {
+            cgi.Failure("No comics found");
+            return;
+        }
+        ShowSpecificComic(cgi, ids.Max());
+    }
 
-    static string GetLatestImage()
-        => GetSpecificImage(GetComicIds().Max());
+    private static void ShowRandomComic(CgiWrapper cgi)
+    {
+        var ids = GetComicIds();
+        if (ids.Count == 0)
+        {
+            cgi.Failure("No comics found");
+            return;
+        }
+        Random rand = new Random();
+        int id = rand.Next(ids.Count);
+        
+        ShowSpecificComic(cgi, id);
+    }
+    
+    private static void ShowSpecificComic(CgiWrapper cgi, int comicId)
+    {
+        cgi.Success("image/png");
+        //var metadata = XkcdApiResponse.FromJson($"{ArchivePath}{comicId}.json");
+        
+        var filename = $"{ArchivePath}{comicId}.png";
+        cgi.Out.Write(File.ReadAllBytes(filename));
+    }
 
     static List<int> GetComicIds()
         => Directory.GetFiles(ArchivePath, "*.png")
