@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xkcd.Cgi", "Xkcd.Cgi\Xkcd.Cgi.csproj", "{0E5CA425-0A23-4A93-99D3-7334BE2723C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xkcd.Api", "Xkcd.Api\Xkcd.Api.csproj", "{91648B64-4D79-45C8-A0A6-284153174020}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xkcd.Archiver", "Xkcd.Archiver\Xkcd.Archiver.csproj", "{5C3E838E-87BA-4168-877D-35698CE925AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E5CA425-0A23-4A93-99D3-7334BE2723C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5CA425-0A23-4A93-99D3-7334BE2723C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5CA425-0A23-4A93-99D3-7334BE2723C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5CA425-0A23-4A93-99D3-7334BE2723C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91648B64-4D79-45C8-A0A6-284153174020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91648B64-4D79-45C8-A0A6-284153174020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91648B64-4D79-45C8-A0A6-284153174020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91648B64-4D79-45C8-A0A6-284153174020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3E838E-87BA-4168-877D-35698CE925AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3E838E-87BA-4168-877D-35698CE925AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3E838E-87BA-4168-877D-35698CE925AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3E838E-87BA-4168-877D-35698CE925AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
