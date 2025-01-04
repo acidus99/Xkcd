@@ -49,7 +49,7 @@ internal static class Program
             }
             previousYear = meta.Year;
             
-            fout.WriteLine($"=> {num}.png {meta.Title} (#{meta.ComicId} {meta.Date})");
+            fout.WriteLine($"=> /cgi-bin/xkcd.cgi?{num} {meta.Title}  - (#{meta.ComicId} {meta.Date})");
         }
         fout.Close();
     }

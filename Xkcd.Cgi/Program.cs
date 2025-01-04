@@ -11,22 +11,23 @@ public class Program
 
     public static void Main(string[] args)
     {
+        using (CgiWrapper cgi = new())
+        {
+            string query = cgi.SantiziedQuery;
 
-        CgiWrapper cgi = new();
-        string query = cgi.SantiziedQuery;
-        
-        if (query == "latest")
-        {
-            ShowLatestComic(cgi);
-        }
-        else if (AllDigits.IsMatch(query))
-        {
-            var comicId = Convert.ToInt32(query);
-            ShowSpecificComic(cgi, comicId);
-        }
-        else
-        {
-            ShowRandomComic(cgi);
+            if (query == "latest")
+            {
+                ShowLatestComic(cgi);
+            }
+            else if (AllDigits.IsMatch(query))
+            {
+                var comicId = Convert.ToInt32(query);
+                ShowSpecificComic(cgi, comicId);
+            }
+            else
+            {
+                ShowRandomComic(cgi);
+            }
         }
     }
 
@@ -57,12 +58,37 @@ public class Program
     
     private static void ShowSpecificComic(CgiWrapper cgi, int comicId)
     {
-        cgi.Success("image/png");
-        //var metadata = XkcdApiResponse.FromJson($"{ArchivePath}{comicId}.json");
+        if (!File.Exists(GetJsonPath(comicId)))
+        {
+            cgi.Failure("Unknown comic ID");
+            return;
+        }
         
-        var filename = $"{ArchivePath}{comicId}.png";
-        cgi.Out.Write(File.ReadAllBytes(filename));
+        bool nextExists = File.Exists(GetJsonPath(comicId+1));
+        bool prevExists = File.Exists(GetJsonPath(comicId - 1));
+        
+        var metadata = XkcdApiResponse.FromJson(File.ReadAllText(GetJsonPath(comicId)));
+        cgi.Success();
+        cgi.Writer.WriteLine($"# XKCD #{comicId} ");
+        cgi.Writer.WriteLine($"## {metadata.Title}");
+        cgi.Writer.WriteLine(metadata.Date);
+        cgi.Writer.WriteLine($"=> /xkcd/archive/{comicId}.png Comic Image: {metadata.Title}");
+        metadata.Alt.Split('\n').ToList().ForEach(x => cgi.Writer.WriteLine("> "+ x));
+        cgi.Writer.WriteLine("");
+        if (nextExists)
+        {
+            cgi.Writer.WriteLine($"=> ?{comicId+1} ⏭️ Next Comic");
+        }
+        if (prevExists)
+        {
+            cgi.Writer.WriteLine($"=> ?{comicId-1} ⏮️ Previous Comic");
+        }
+        cgi.Writer.WriteLine("=> /xkcd/archive/ View List");
+        cgi.Writer.WriteLine("=> /cgi-bin/xkcd.cgi 🎲 Random Comic");
     }
+
+    private static string GetJsonPath(int comicId)
+        => $"{ArchivePath}{comicId}.json";
 
     static List<int> GetComicIds()
         => Directory.GetFiles(ArchivePath, "*.png")
