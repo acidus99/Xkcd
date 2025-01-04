@@ -10,21 +10,21 @@ public class XkcdApiResponse
         PropertyNameCaseInsensitive = true
     };
     
-    public string Alt { get; init; }
+    public required string Alt { get; init; }
 
     [JsonPropertyName("num")]
-    public int ComicId { get; init; }
+    public required int ComicId { get; init; }
 
     [JsonPropertyName("img")]
-    public string ImageUrl { get; init; }
+    public required string ImageUrl { get; init; }
 
     //use safe title to avoid HTML like in comic #472 
     [JsonPropertyName("safe_title")]
-    public string Title { get; init; }
+    public required string Title { get; init; }
 
-    public string Month { get; init; }
-    public string Day { get; init; }
-    public string Year { get; init; }
+    public required string Month { get; init; }
+    public required string Day { get; init; }
+    public required string Year { get; init; }
 
     [JsonIgnore]
     public string Date => $"{Year}-{Pad(Month)}-{Pad(Day)}";
