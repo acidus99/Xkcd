@@ -4,7 +4,7 @@ using Xkcd.Api;
 
 namespace Xkcd.Cgi;
 
-public class Program
+public static class Program
 {
     private const string ArchivePath = "public_root/xkcd/archive/";
     private static readonly Regex AllDigits = new(@"^\d+$", RegexOptions.Compiled);

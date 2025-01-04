@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace Xkcd.Api;
+﻿namespace Xkcd.Api;
 
 public class XkcdClient : IDisposable
 {

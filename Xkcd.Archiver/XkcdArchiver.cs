@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Xkcd.Api;
+﻿using Xkcd.Api;
 
 namespace Xkcd.Archiver;
 
@@ -16,7 +12,7 @@ public class XkcdArchiver
      * 1608 - hoverboard game
      * 1663 - garden
      */
-    private readonly int[] _idsToSkip = {404, 1190, 1335, 1608, 1663 };
+    private readonly int[] _idsToSkip = [404, 1190, 1335, 1608, 1663];
 
     public string ArchiveDirectory { get; private set; }
 

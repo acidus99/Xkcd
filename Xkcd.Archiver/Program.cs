@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.IO;
-using System.Runtime.InteropServices.JavaScript;
-using Xkcd.Api;
+﻿using Xkcd.Api;
 
 namespace Xkcd.Archiver;
 
-internal static class Program
+public static class Program
 {
     private static void Main(string[] args)
     {
