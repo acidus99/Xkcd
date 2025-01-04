@@ -31,7 +31,15 @@ public class XkcdApiResponse
 
     private string Pad(string s)
         => s.Length == 1 ? "0" + s : s;
-        
+
     public static XkcdApiResponse FromJson(string json)
-        => JsonSerializer.Deserialize<XkcdApiResponse>(json, JsonSerializerOptions);
+    {
+        var ret = JsonSerializer.Deserialize<XkcdApiResponse>(json, JsonSerializerOptions);
+        if (ret == null)
+        {
+            throw new ArgumentException("Invalid xkcd json", nameof(json));
+        }
+
+        return ret;
+    }
 }
